@@ -78,6 +78,27 @@ class ResolverTests(unittest.TestCase):
         self.assertEqual(result.geographies["state"].name, "District of Columbia")
         self.assertEqual(provider.reverse_calls, 1)
 
+    def test_resolve_current_location_uses_reverse_lookup(self):
+        provider = FakeProvider(
+            geographies={
+                "state": None,
+                "county": None,
+                "place": None,
+                "zcta": None,
+                "tract": None,
+            }
+        )
+
+        result = Resolver(provider).resolve_current_location(38.8899, -77.0091)
+
+        self.assertIsNone(result.input_address)
+        self.assertEqual(result.input_coordinates.latitude, 38.8899)
+        self.assertEqual(result.input_coordinates.longitude, -77.0091)
+        self.assertEqual(result.coordinates.latitude, 38.8899)
+        self.assertEqual(result.coordinates.longitude, -77.0091)
+        self.assertEqual(result.geographies["state"].geoid, "11")
+        self.assertEqual(provider.reverse_calls, 1)
+
 
 if __name__ == "__main__":
     unittest.main()

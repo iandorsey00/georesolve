@@ -48,6 +48,18 @@ def create_app():
         except ProviderError as exc:
             raise HTTPException(status_code=502, detail=str(exc))
 
+    @app.get("/resolve-current-location")
+    def resolve_current_location(
+        latitude: float = Query(..., ge=-90.0, le=90.0),
+        longitude: float = Query(..., ge=-180.0, le=180.0),
+    ):
+        try:
+            return resolver.resolve_current_location(latitude=latitude, longitude=longitude).to_dict()
+        except NoMatchError as exc:
+            raise HTTPException(status_code=404, detail=str(exc))
+        except ProviderError as exc:
+            raise HTTPException(status_code=502, detail=str(exc))
+
     return app
 
 

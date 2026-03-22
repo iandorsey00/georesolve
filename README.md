@@ -124,6 +124,9 @@ The canonical result shape is:
 
 `geoids` is the main downstream handoff for future `geocompare` integration.
 
+When resolving current location instead of an address, `input` contains
+`coordinates` and `matched_address` is `null`.
+
 ## Current Provider Strategy
 
 The scaffold includes a Census-backed provider because it can already support:
@@ -151,6 +154,12 @@ Resolve an address:
 
 ```bash
 georesolve resolve "4600 Silver Hill Rd, Washington, DC 20233"
+```
+
+Resolve caller-supplied current coordinates:
+
+```bash
+georesolve resolve-current-location 38.8899 -77.0091
 ```
 
 Select provider-facing options explicitly:
@@ -199,6 +208,8 @@ tests/
 ## Notes
 
 - The current scaffold is designed for U.S.-focused resolution.
+- "Current location" means coordinates supplied by the caller, typically from a
+  browser or mobile geolocation API.
 - `place` prefers incorporated places and falls back to Census designated
   places.
 - ZCTA is treated as an approximate Census geography, not a USPS ZIP guarantee.

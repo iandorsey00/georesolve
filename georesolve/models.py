@@ -31,8 +31,9 @@ class GeocodedAddress:
 
 @dataclass(frozen=True)
 class ResolveResult:
-    input_address: str
-    matched_address: str
+    input_address: str | None
+    input_coordinates: Coordinates | None
+    matched_address: str | None
     coordinates: Coordinates
     geographies: dict[str, GeographyMatch | None]
     geocoder: str
@@ -44,8 +45,14 @@ class ResolveResult:
         return {kind: match.geoid if match else None for kind, match in self.geographies.items()}
 
     def to_dict(self) -> dict[str, Any]:
+        input_payload: dict[str, Any] = {}
+        if self.input_address is not None:
+            input_payload["address"] = self.input_address
+        if self.input_coordinates is not None:
+            input_payload["coordinates"] = asdict(self.input_coordinates)
+
         return {
-            "input": {"address": self.input_address},
+            "input": input_payload,
             "matched_address": self.matched_address,
             "coordinates": asdict(self.coordinates),
             "geographies": {

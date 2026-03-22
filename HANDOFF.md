@@ -18,6 +18,7 @@
 
 - Python package with typed models
 - CLI entrypoint: `georesolve resolve "<address>"`
+- Current-location CLI entrypoint: `georesolve resolve-current-location <lat> <lon>`
 - Optional API entrypoint: `georesolve-api`
 - Census-backed provider abstraction
 - Provider/config factory for benchmark and vintage selection
@@ -35,6 +36,9 @@ The main downstream contract is the stable JSON response plus flat `geoids`:
 - `tract`
 
 Those IDs are the intended handoff surface for later `geocompare` integration.
+
+The repo also supports coordinate-driven resolution for browser or device
+geolocation flows.
 
 ## Recommended Next Steps
 
