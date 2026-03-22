@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "georesolve"
+dynamic = ["version"]
+description = "Resolve U.S. street addresses into coordinates and Census-oriented geographies"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+  { name = "Ian Dorsey", email = "ian.dorsey@gmail.com" }
+]
+dependencies = []
+
+[project.optional-dependencies]
+web = [
+  "fastapi>=0.115.0,<1.0.0",
+  "uvicorn>=0.30.0,<1.0.0",
+]
+dev = [
+  "ruff>=0.6.0",
+]
+
+[project.scripts]
+georesolve = "georesolve.interfaces.cli:main"
+georesolve-api = "georesolve.interfaces.api:main"
+
+[tool.setuptools.packages.find]
+exclude = ["tests*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "georesolve.__version__" }
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E501"]
