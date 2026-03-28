@@ -12,8 +12,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="georesolve")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    resolve_parser = subparsers.add_parser("resolve", help="Resolve an address into coordinates and geographies")
-    resolve_parser.add_argument("address", help="Street address to resolve")
+    resolve_parser = subparsers.add_parser(
+        "resolve",
+        help="Resolve an address, lat/lon pair, or supported map URL into geographies",
+    )
+    resolve_parser.add_argument(
+        "address",
+        help="Address, coordinate pair, or supported map URL to resolve",
+    )
     resolve_parser.add_argument(
         "--provider",
         default="census",

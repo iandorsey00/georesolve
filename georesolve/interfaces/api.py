@@ -15,6 +15,15 @@ def _optional_dependency_error(package_name: str):
     )
 
 
+def _resolve_query_target(query: str | None, address: str | None) -> str:
+    if query and address:
+        raise ValueError("Provide either 'query' or 'address', not both.")
+    target = query or address
+    if target is None:
+        raise ValueError("Provide either 'query' or 'address'.")
+    return target
+
+
 def create_app():
     if importlib.util.find_spec("fastapi") is None:
         _optional_dependency_error("fastapi")
@@ -40,9 +49,16 @@ def create_app():
         }
 
     @app.get("/resolve")
-    def resolve(address: str = Query(..., min_length=1)):
+    def resolve(
+        query: str | None = Query(None, min_length=1),
+        address: str | None = Query(None, min_length=1),
+    ):
         try:
-            return resolver.resolve(address).to_dict()
+            target = _resolve_query_target(query, address)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc))
+        try:
+            return resolver.resolve(target).to_dict()
         except NoMatchError as exc:
             raise HTTPException(status_code=404, detail=str(exc))
         except ProviderError as exc:

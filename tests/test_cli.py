@@ -46,6 +46,19 @@ class CliTests(unittest.TestCase):
         self.assertEqual(args.longitude, -77.0091)
         self.assertEqual(args.provider, "census")
 
+    def test_resolve_parser_accepts_url_like_query(self):
+        parser = build_parser()
+
+        args = parser.parse_args(
+            [
+                "resolve",
+                "https://www.google.com/maps/@38.8899,-77.0091,15z",
+            ]
+        )
+
+        self.assertEqual(args.command, "resolve")
+        self.assertEqual(args.address, "https://www.google.com/maps/@38.8899,-77.0091,15z")
+
 
 if __name__ == "__main__":
     unittest.main()

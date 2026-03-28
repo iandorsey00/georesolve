@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from georesolve.models import Coordinates, ResolveResult
+from georesolve.parsing import parse_query_coordinates
 from georesolve.providers.base import GeocodeProvider, GeographyProvider
 
 
@@ -14,6 +15,16 @@ class Resolver:
         self.geography_provider = geography_provider or geocoder
 
     def resolve(self, address: str) -> ResolveResult:
+        parsed_coordinates = parse_query_coordinates(address)
+        if parsed_coordinates is not None:
+            return self.resolve_coordinates(
+                latitude=parsed_coordinates.latitude,
+                longitude=parsed_coordinates.longitude,
+            )
+
+        return self.resolve_address(address)
+
+    def resolve_address(self, address: str) -> ResolveResult:
         geocoded = self.geocoder.geocode(address)
         geographies = geocoded.geographies
 

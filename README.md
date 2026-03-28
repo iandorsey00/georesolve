@@ -5,6 +5,7 @@
 Its job is narrow and explicit:
 
 - address -> latitude/longitude
+- parse direct latitude/longitude input and coordinate-bearing map URLs
 - latitude/longitude -> Census-oriented geographies
 - return a stable JSON contract that downstream tools can consume
 
@@ -156,6 +157,18 @@ Resolve an address:
 georesolve resolve "4600 Silver Hill Rd, Washington, DC 20233"
 ```
 
+Resolve a direct lat/lon pair:
+
+```bash
+georesolve resolve "38.8899, -77.0091"
+```
+
+Resolve a coordinate-bearing Google Maps URL:
+
+```bash
+georesolve resolve "https://www.google.com/maps/@38.8899,-77.0091,15z"
+```
+
 Resolve caller-supplied current coordinates:
 
 ```bash
@@ -188,6 +201,13 @@ export GEORESOLVE_VINTAGE=Current_Current
 georesolve-api
 ```
 
+Resolve through the API with either an address-style query or a coordinate URL:
+
+```bash
+curl "http://127.0.0.1:8080/resolve?query=38.8899,-77.0091"
+curl "http://127.0.0.1:8080/resolve?query=https://www.google.com/maps/@38.8899,-77.0091,15z"
+```
+
 Run live smoke tests against the Census service only when wanted:
 
 ```bash
@@ -208,6 +228,10 @@ tests/
 ## Notes
 
 - The current scaffold is designed for U.S.-focused resolution.
+- `resolve` accepts an address, a direct `lat,lon` pair, or a supported map URL
+  that includes coordinates.
+- API `/resolve` accepts either `query` or `address`, but rejects requests that
+  send both fields at once.
 - "Current location" means coordinates supplied by the caller, typically from a
   browser or mobile geolocation API.
 - `place` prefers incorporated places and falls back to Census designated

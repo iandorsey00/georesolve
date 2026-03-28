@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Project: `georesolve`
-- Handoff date: 2026-03-22
+- Handoff date: 2026-03-28
 - Version: `0.2.0`
 
 ## Decisions Made
@@ -17,7 +17,7 @@
 ## Current Scaffold
 
 - Python package with typed models
-- CLI entrypoint: `georesolve resolve "<address>"`
+- CLI entrypoint: `georesolve resolve "<address-or-latlon-or-url>"`
 - Current-location CLI entrypoint: `georesolve resolve-current-location <lat> <lon>`
 - Optional API entrypoint: `georesolve-api`
 - Census-backed provider abstraction
@@ -39,6 +39,13 @@ Those IDs are the intended handoff surface for later `geocompare` integration.
 
 The repo also supports coordinate-driven resolution for browser or device
 geolocation flows.
+
+The main `resolve` path now also accepts direct lat/lon strings and
+coordinate-bearing map URLs such as Google Maps URLs that contain embedded
+coordinates.
+
+API input handling now rejects ambiguous requests that send both `query` and
+`address`, and URL parsing is limited to `http`/`https` inputs.
 
 ## Recommended Next Steps
 
