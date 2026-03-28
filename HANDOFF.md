@@ -4,7 +4,7 @@
 
 - Project: `georesolve`
 - Handoff date: 2026-03-28
-- Version: `0.2.0`
+- Version: `0.3.0`
 
 ## Decisions Made
 
