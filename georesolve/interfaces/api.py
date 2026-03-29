@@ -37,7 +37,7 @@ def create_app():
         timeout_seconds=float(os.getenv("GEORESOLVE_TIMEOUT_SECONDS", "15.0")),
     )
     resolver = Resolver(provider)
-    app = FastAPI(title="georesolve API", version="0.3.0")
+    app = FastAPI(title="georesolve API", version="0.3.1")
 
     @app.get("/health")
     def health():
