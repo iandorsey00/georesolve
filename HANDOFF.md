@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Project: `georesolve`
-- Handoff date: 2026-03-28
+- Handoff date: 2026-03-29
 - Version: `0.3.0`
 
 ## Decisions Made
@@ -18,7 +18,7 @@
 
 - Python package with typed models
 - CLI entrypoint: `georesolve resolve "<address-or-latlon-or-url>"`
-- Current-location CLI entrypoint: `georesolve resolve-current-location <lat> <lon>`
+- Coordinate CLI entrypoint: `georesolve resolve-coordinates <lat> <lon>`
 - Optional API entrypoint: `georesolve-api`
 - Census-backed provider abstraction
 - Provider/config factory for benchmark and vintage selection
@@ -46,6 +46,15 @@ coordinates.
 
 API input handling now rejects ambiguous requests that send both `query` and
 `address`, and URL parsing is limited to `http`/`https` inputs.
+
+The CLI now prefers `resolve-coordinates` as the explicit coordinate command,
+while keeping `resolve-current-location` as a compatibility alias.
+
+CLI exit codes are now explicit and stable for automation:
+- `0` success
+- `1` provider or upstream error
+- `2` usage error
+- `3` no match
 
 ## Recommended Next Steps
 

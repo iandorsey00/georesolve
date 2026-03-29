@@ -172,7 +172,7 @@ georesolve resolve "https://www.google.com/maps/@38.8899,-77.0091,15z"
 Resolve caller-supplied current coordinates:
 
 ```bash
-georesolve resolve-current-location 38.8899 -77.0091
+georesolve resolve-coordinates 38.8899 -77.0091
 ```
 
 Select provider-facing options explicitly:
@@ -214,6 +214,20 @@ Run live smoke tests against the Census service only when wanted:
 GEORESOLVE_RUN_LIVE_TESTS=1 python3 -m unittest tests.test_live_census_smoke
 ```
 
+## CLI Notes
+
+- `georesolve resolve` is the main smart entrypoint for addresses, direct
+  `lat,lon` input, and supported coordinate-bearing map URLs.
+- `georesolve resolve-coordinates` is the preferred explicit coordinate
+  command.
+- `georesolve resolve-current-location` remains available as a compatibility
+  alias.
+- Exit codes are stable and automation-friendly:
+  - `0` success
+  - `1` provider or upstream error
+  - `2` usage error
+  - `3` no match
+
 ## Repository Layout
 
 ```text
@@ -230,6 +244,8 @@ tests/
 - The current scaffold is designed for U.S.-focused resolution.
 - `resolve` accepts an address, a direct `lat,lon` pair, or a supported map URL
   that includes coordinates.
+- `resolve-coordinates` is the preferred explicit-coordinate CLI command.
+- `resolve-current-location` remains available as a compatibility alias.
 - API `/resolve` accepts either `query` or `address`, but rejects requests that
   send both fields at once.
 - "Current location" means coordinates supplied by the caller, typically from a
